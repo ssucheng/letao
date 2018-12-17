@@ -13,8 +13,7 @@ export default {
 
 <style>
 body{
-  margin:0;
-  padding:0;
+ background-color:rgb(244,245,246)
 }
 
 </style>
