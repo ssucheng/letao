@@ -2,7 +2,7 @@
   <div class="categories">
     <el-button
       type="success"
-      @click="addCategory"
+      @click="categorydialogVisible = !categorydialogVisible"
     >添加分类</el-button>
     <el-card
       class="box-card"
@@ -46,7 +46,7 @@
         :visible.sync="categorydialogVisible"
         width="30%"
       >
-        <el-input v-model="input" placeholder="请输入内容"></el-input>
+        <el-input v-model="input" placeholder="请输入分类"></el-input>
         <span
           slot="footer"
           class="dialog-footer"
@@ -54,7 +54,7 @@
           <el-button @click="categorydialogVisible = false">关闭</el-button>
           <el-button
             type="primary"
-            @click="categorydialogVisible = false"
+            @click="addBtnCategory"
           >保存</el-button>
         </span>
       </el-dialog>
@@ -62,7 +62,7 @@
   </div>
 </template>
 <script>
-import { getCategory } from '@/api'
+import { getCategory, addCategory } from '@/api'
 export default {
   data () {
     return {
@@ -76,9 +76,18 @@ export default {
     this.init()
   },
   methods: {
-    //   点击添加分类弹出弹框
-    addCategory () {
-      this.categorydialogVisible = true
+    //   添加分类
+    addBtnCategory () {
+      this.categorydialogVisible = false
+      addCategory({categoryName: this.input}).then(res => {
+        // console.log(res)
+        if (res.status === 200) {
+          this.$message.success('添加分类成功')
+          this.init()
+        } else {
+          this.$message.error('添加分类失败')
+        }
+      })
     },
     //   cell的样式
     cellStyle ({ row, column, rowIndex, columnIndex }) {
@@ -90,6 +99,7 @@ export default {
     },
     init () {
       getCategory({ page: 1, pageSize: 10 }).then(res => {
+        console.log(res)
         if (res.status === 200) {
           this.categoriesList = res.data.rows
           this.total = res.data.total

@@ -52,3 +52,15 @@ export const getProduct = (pa) => {
     return result
   })
 }
+// 添加一级分类
+export const addCategory = (pa) => {
+  return axios.post('/category/addTopCategory', pa).then(result => {
+    return result
+  })
+}
+// 添加二级分类
+export const addCategory2 = (pa) => {
+  return axios.post('/category/addSecondCategory', pa).then(result => {
+    return result
+  })
+}
